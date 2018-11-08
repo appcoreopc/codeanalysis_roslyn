@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using C3.Core.CodeAnalysis.Extensions;
 using C3.Core.CodeAnalysis;
 
-
 namespace C3.CodeAnalysis.Net.Analyzer
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]

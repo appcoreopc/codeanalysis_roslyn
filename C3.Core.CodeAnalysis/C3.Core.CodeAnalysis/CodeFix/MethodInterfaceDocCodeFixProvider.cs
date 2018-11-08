@@ -15,7 +15,7 @@ namespace C3.Core.CodeAnalysis.CodeFix
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MethodInterfaceDocCodeFixProvider)), Shared]
     public class MethodInterfaceDocCodeFixProvider : CodeFixProvider
     {
-        private const string title = "Add docs for interface's method";
+        private const string title = "Add some docs to this method";
         private const string interfaceDefinitionDocMessage = "Please provide documentation for inteface's method definition";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
@@ -66,6 +66,7 @@ namespace C3.Core.CodeAnalysis.CodeFix
             
             MemberDeclarationSyntax newMemberNode = null;
             MemberDeclarationSyntax currentMemberNode = null;
+
             if (interfaceDefinition != null && interfaceDefinition.Members != null)
             {
                 foreach (var methodDefinition in interfaceDefinition.Members)
