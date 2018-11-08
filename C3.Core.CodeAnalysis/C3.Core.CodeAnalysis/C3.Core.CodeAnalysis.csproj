@@ -43,6 +43,7 @@
     <Compile Include="CodeFix\DateTimeCodeFixProvider.cs" />
     <Compile Include="CodeFix\DateTimeMethodCodeFixProvider.cs" />
     <Compile Include="CodeFix\DateTimeOffSetHelper.cs" />
+    <Compile Include="CodeFix\MethodInterfaceDocCodeFixProvider.cs" />
     <Compile Include="CodeFix\InterfaceDocCodeFixProvider.cs" />
     <Compile Include="Extensions\EqualsValueClauseSyntaxExtension.cs" />
     <Compile Include="Extensions\LocalDeclarationStatementSyntaxExtension.cs" />

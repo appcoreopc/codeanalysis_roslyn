@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using C3.Core.CodeAnalysis.Extensions;
 using C3.Core.CodeAnalysis;
-using System.Linq;
 
 namespace C3.CodeAnalysis.Net.Analyzer
 {
@@ -35,42 +34,14 @@ namespace C3.CodeAnalysis.Net.Analyzer
                 foreach (var memberMethod in interfaceDeclaration.Members)
                 {
                     var anyMethodDocs = memberMethod.GetLeadingTrivia().AnyDocumentationTrivia();
-                    var methodLocation = memberMethod.GetLocation();
-
+                    
                     if (!anyMethodDocs)
                     {
+                        var methodLocation = memberMethod.GetLocation();
                         context.ReportDiagnostic(Diagnostic.Create(Rule, methodLocation));
                         return;
                     }
                 }
-            }
-
-            //// Common cases for interface modifier //
-            //// To make code analysis faster, we try to use first modifier 
-            //if (interfaceDeclaration.Modifiers.Count > 0)
-            //{
-            //    var declaredInterface = interfaceDeclaration.Modifiers.FirstOrDefault(x => x.IsInterfaceModifier());
-            //    if (declaredInterface != null)
-            //        HandleInterfaceDocumentationTrace(declaredInterface.LeadingTrivia, context);
-            //}
-            //else
-            //{
-            //    // normal interface definition 
-            //    if (interfaceDeclaration.Keyword.HasLeadingTrivia &&
-            //    interfaceDeclaration.Keyword.LeadingTrivia.Count > 0)
-            //    {
-            //        HandleInterfaceDocumentationTrace(interfaceDeclaration.Keyword.LeadingTrivia, context);
-            //    }
-            //}
-        }
-
-        private void HandleInterfaceDocumentationTrace(SyntaxTriviaList syntaxTriviaList, SyntaxNodeAnalysisContext context)
-        {
-            var docAvailableForInterfaceKeyword = syntaxTriviaList.AnyDocumentationTrivia();
-
-            if (!docAvailableForInterfaceKeyword)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation()));
             }
         }
     }
