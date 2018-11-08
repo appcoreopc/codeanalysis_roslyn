@@ -39,11 +39,9 @@ namespace C3.Core.CodeAnalysis.CodeFix
 
             var diagnostic = context.Diagnostics.First();
             var diagnosticSpan = diagnostic.Location.SourceSpan;
-
-            // Find the type declaration identified by the diagnostic.
+            
             var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<MethodDeclarationSyntax>().First();
-
-            // Register a code action that will invoke the fix.
+            
             context.RegisterCodeFix(
                 CodeAction.Create(
                     title: title,

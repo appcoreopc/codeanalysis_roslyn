@@ -39,13 +39,12 @@ namespace C3.Core.CodeAnalysis.CodeFix
                 if (diagnostic != null && diagnostic.Location != null)
                 {
                     var diagnosticSpan = diagnostic.Location.SourceSpan;
-
-                    // Find the type declaration identified by the diagnostic.
+                    
                     var declaration = root.FindToken(diagnosticSpan.Start).Parent.AncestorsAndSelf().OfType<InterfaceDeclarationSyntax>().FirstOrDefault();
 
                     if (declaration != null)
                     {
-                        // Register a code action that will invoke the fix.
+                        
                         context.RegisterCodeFix(
                             CodeAction.Create(
                                 title: title,
@@ -65,28 +64,26 @@ namespace C3.Core.CodeAnalysis.CodeFix
             var trimmedLocal = interfaceDefinition.ReplaceToken(
                 firstToken, firstToken.WithLeadingTrivia(SyntaxTriviaList.Empty));
             
-            MemberDeclarationSyntax newLocal = null;
-            MemberDeclarationSyntax current = null;
+            MemberDeclarationSyntax newMemberNode = null;
+            MemberDeclarationSyntax currentMemberNode = null;
             if (interfaceDefinition != null && interfaceDefinition.Members != null)
             {
                 foreach (var methodDefinition in interfaceDefinition.Members)
                 {
                     if (!methodDefinition.GetLeadingTrivia().AnyDocumentationTrivia())
                     {
-                        current = methodDefinition;
-                        newLocal = methodDefinition.WithLeadingTrivia(SyntaxTokenExtension.CreateCommentTrivia(interfaceDefinitionDocMessage));
+                        currentMemberNode = methodDefinition;
+                        newMemberNode = methodDefinition.WithLeadingTrivia(SyntaxTokenExtension.CreateCommentTrivia(interfaceDefinitionDocMessage));
                         break;
                     }
                 }
             }
             
-            var formattedLocal = newLocal.WithAdditionalAnnotations(Formatter.Annotation);
+            var formattedLocal = newMemberNode.WithAdditionalAnnotations(Formatter.Annotation);
             
-            // Replace the old local declaration with the new local declaration.
             var root = await document.GetSyntaxRootAsync(cancellationToken);
-            var newRoot = root.ReplaceNode(current, formattedLocal);
+            var newRoot = root.ReplaceNode(currentMemberNode, formattedLocal);
 
-            // Return document with transformed tree.
             return document.WithSyntaxRoot(newRoot);
         }
     }

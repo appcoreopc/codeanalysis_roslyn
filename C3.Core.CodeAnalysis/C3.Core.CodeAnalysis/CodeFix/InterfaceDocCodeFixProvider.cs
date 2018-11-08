@@ -66,11 +66,9 @@ namespace C3.Core.CodeAnalysis.CodeFix
                 firstToken, firstToken.WithLeadingTrivia(SyntaxTriviaList.Empty));
             
             var newLocal = trimmedLocal.WithLeadingTrivia(SyntaxTokenExtension.CreateCommentTrivia(interfaceDefinitionDocMessage));
-
-            // Add an annotation to format the new local declaration.
+                        
             var formattedLocal = newLocal.WithAdditionalAnnotations(Formatter.Annotation);
-
-            // Replace the old local declaration with the new local declaration.
+                        
             var root = await document.GetSyntaxRootAsync(cancellationToken);
             var newRoot = root.ReplaceNode(interfaceDefinition, formattedLocal);
 
