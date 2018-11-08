@@ -28,54 +28,61 @@ namespace C3.CodeAnalysis.Net.Analyzer
 
         private void AnalyzeNode(SyntaxNodeAnalysisContext context)
         {
-            // Performs semantic checking, if it is declared elsewhere //
+            
             var sym = context.SemanticModel.GetDeclaredSymbol(context.Node);
-           
-            if (sym.DeclaringSyntaxReferences.Length > 1)
+            var signsOfDocumentation = false; 
+
+            if (sym != null && sym.DeclaringSyntaxReferences.Length > 0)
             {
+                var anyLeadingDocs = sym.DeclaringSyntaxReferences.Any(x => x.GetSyntax().HasLeadingTrivia == true);
+
                 foreach (var item in sym.DeclaringSyntaxReferences)
-                {   
-                    var syntaxNode = item.GetSyntax();
-                }
-
-
-
-
-            }
-
-            //var a  = sym.GetDocumentationCommentId();
-            //var b = sym.GetDocumentationCommentXml();
-
-            var rr = context.Node.GetLeadingTrivia();
-            var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
-
-            // Common cases for interface modifier //
-            // To make code analysis faster, we try to use first modifier 
-            if (interfaceDeclaration.Modifiers.Count > 0)
-            {
-                var declaredInterface = interfaceDeclaration.Modifiers.FirstOrDefault(x => x.IsInterfaceModifier());
-                if (declaredInterface != null)
-                    HandleInterfaceDocumentationTrace(declaredInterface.LeadingTrivia, context);
-            }
-            else
-            {
-                // normal interface definition 
-                if (interfaceDeclaration.Keyword.HasLeadingTrivia &&
-                interfaceDeclaration.Keyword.LeadingTrivia.Count > 0)
                 {
-                    HandleInterfaceDocumentationTrace(interfaceDeclaration.Keyword.LeadingTrivia, context);
+                    var leadingTrivia = item.GetSyntax().GetLeadingTrivia();
+
+                    signsOfDocumentation = leadingTrivia.AnyDocumentationTrivia();
+                    if (signsOfDocumentation)
+                    {
+                        signsOfDocumentation = true;
+                        return;
+                    }
+                }
+
+                if (!signsOfDocumentation)
+                {
+                    context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation()));
                 }
             }
+                        
+            //var interfaceDeclaration = (InterfaceDeclarationSyntax) context.Node;
+            //// Common cases for interface modifier //
+            //// To make code analysis faster, we try to use first modifier 
+            //if (interfaceDeclaration.Modifiers.Count > 0)
+            //{
+            //    var declaredInterface = interfaceDeclaration.Modifiers.FirstOrDefault(x => x.IsInterfaceModifier());
+            //    if (declaredInterface != null)
+            //        HandleInterfaceDocumentationTrace(declaredInterface.LeadingTrivia, context);
+            //}
+            //else
+            //{
+            //    // normal interface definition 
+            //    if (interfaceDeclaration.Keyword.HasLeadingTrivia &&
+            //    interfaceDeclaration.Keyword.LeadingTrivia.Count > 0)
+            //    {
+            //        HandleInterfaceDocumentationTrace(interfaceDeclaration.Keyword.LeadingTrivia, context);
+            //    }
+            //}
         }
 
-        private void HandleInterfaceDocumentationTrace(SyntaxTriviaList syntaxTriviaList, SyntaxNodeAnalysisContext context)
-        {
-            var docAvailableForInterfaceKeyword = syntaxTriviaList.AnyDocumentationTrivia();
 
-            if (!docAvailableForInterfaceKeyword)
-            {
-                context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation()));
-            }
-        }
+        //private void HandleInterfaceDocumentationTrace(SyntaxTriviaList syntaxTriviaList, SyntaxNodeAnalysisContext context)
+        //{
+        //    var docAvailableForInterfaceKeyword = syntaxTriviaList.AnyDocumentationTrivia();
+
+        //    if (!docAvailableForInterfaceKeyword)
+        //    {
+        //        context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation()));
+        //    }
+        //}
     }
 }

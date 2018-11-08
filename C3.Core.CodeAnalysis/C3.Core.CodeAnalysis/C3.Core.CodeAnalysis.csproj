@@ -39,12 +39,10 @@
     <Compile Include="Analyzer\DateTimeMethodAnalyzer.cs" />
     <Compile Include="Analyzer\InterfaceDocumentationAnalyzer.cs" />
     <Compile Include="CodeAnalysisConstants.cs" />
-    <Compile Include="CodeFixProvider.cs" />
     <Compile Include="CodeFix\DateTimeCodeFixProvider.cs" />
     <Compile Include="CodeFix\DateTimeMethodCodeFixProvider.cs" />
     <Compile Include="CodeFix\DateTimeOffSetHelper.cs" />
     <Compile Include="CodeFix\InterfaceDocCodeFixProvider.cs" />
-    <Compile Include="DiagnosticAnalyzer.cs" />
     <Compile Include="Extensions\EqualsValueClauseSyntaxExtension.cs" />
     <Compile Include="Extensions\LocalDeclarationStatementSyntaxExtension.cs" />
     <Compile Include="Extensions\StatementExtension.cs" />
