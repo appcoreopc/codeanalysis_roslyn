@@ -37,6 +37,7 @@
     <Compile Include="Analyzer\BaseAnalyzer.cs" />
     <Compile Include="Analyzer\DateTimeCodeAnalyzer.cs" />
     <Compile Include="Analyzer\DateTimeMethodAnalyzer.cs" />
+    <Compile Include="Analyzer\InterfaceMethodDocAnalyzer.cs" />
     <Compile Include="Analyzer\InterfaceDocumentationAnalyzer.cs" />
     <Compile Include="CodeAnalysisConstants.cs" />
     <Compile Include="CodeFix\DateTimeCodeFixProvider.cs" />

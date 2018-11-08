@@ -14,6 +14,7 @@ namespace C3.Core.CodeAnalysis
         public const string DiagnosticIdDateTimeOffset = "COR0001";
         public const string DiagnosticIdDateTimeUseOnMethodOffset = "COR0001B";
         public const string DiagnosticIdInterfaceDoc = "COR0002";
+        public const string DiagnosticIdMethodInterfaceDoc = "COR0003";
 
     }
 }
